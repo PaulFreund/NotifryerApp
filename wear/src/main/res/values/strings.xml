@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Notifryer Wear</string>
+    <string name="tile_headline">Notifryer</string>
+    <string name="tile_placeholder">Waiting for status</string>
+    <string name="tile_label">Notifryer Status</string>
+    <string name="tile_more_lines">+%1$d more lines</string>
+    <string name="tile_open_app_hint">Open the app to see everything</string>
+    <string name="wear_channel_name_normal">Status Updates</string>
+    <string name="wear_channel_name_important">Important Alerts</string>
+    <string name="main_title">Notifryer Wear</string>
+    <string name="main_body_placeholder">Waiting for incoming updates…</string>
+    <string name="allowlist_heading">Allowlist</string>
+    <string name="allowlist_description">Only notifications containing at least one of these tags will show on the watch. Use * to allow everything.</string>
+    <string name="allowlist_input_label">Add tag</string>
+    <string name="blocklist_heading">Blocklist</string>
+    <string name="blocklist_description">Notifications with any of these tags will be hidden even if they pass the allowlist.</string>
+    <string name="blocklist_input_label">Block tag</string>
+    <string name="add_tag">Add</string>
+    <string name="show_ongoing_title">Show ongoing notifications</string>
+    <string name="show_ongoing_description">Publish ongoing topics as status notifications on this watch.</string>
+    <string name="show_missing_title">Missing status alerts</string>
+    <string name="show_missing_description">Alert when an ongoing topic stops updating for longer than its timeout.</string>
+    <string name="suppress_silent_title">Mute silent updates near phone</string>
+    <string name="suppress_silent_description">Hide ongoing and normal notifications when this watch is connected to its paired phone.</string>
+    <string name="suppress_important_title">Mute important alerts near phone</string>
+    <string name="suppress_important_description">Hide important alerts when this watch is connected to its paired phone.</string>
+    <string name="missing_status_title">Status missing: %1$s</string>
+    <string name="missing_status_body">The topic "%1$s" has not updated for over %2$d seconds.</string>
+    <string name="status_overview_message_placeholder">No message provided</string>
+    <string name="status_overview_updated">Updated %1$s</string>
+</resources>

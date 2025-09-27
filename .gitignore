@@ -1,0 +1,9 @@
+.gradle/
+/local.properties
+/.idea/
+.DS_Store
+/build/
+**/build/
+.cxx/
+app/google-services.json
+wear/google-services.json
