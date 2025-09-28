@@ -41,7 +41,7 @@ notification event. The phone and watch share the same schema.
   "message": {
     "topic": "notifryer-status",
     "data": {
-      "payload": "[{\"timestamp\":1732207200000,\"topic\":\"Front Door\",\"type\":\"ongoing\",\"text\":\"Doorbell idle\",\"timeout\":300,\"tags\":[\"doorbell\"],\"wearable\":{\"headline\":\"Front Door\",\"body\":\"Doorbell idle\"}}]"
+      "payload": "[{\"timestamp\":1732207200000,\"topic\":\"Front Door\",\"type\":\"ongoing\",\"text\":\"Doorbell idle\",\"timeout\":300,\"tags\":[\"doorbell\"],\"actions\":[{\"name\":\"Remove\",\"url\":\"https://example.com/rest/remove\"}]}]"
     }
   }
 }
@@ -54,11 +54,21 @@ notification event. The phone and watch share the same schema.
 | `topic` | ✓ | String | Identifier for the status. Acts as the notification title and tile headline. Unique per ongoing item. |
 | `type` | ✓ | String | One of `ongoing`, `normal`, `important`. Determines priority and channel on both devices. |
 | `timestamp` | ✓ | Number | Unix epoch millis. If omitted or ≤0 we fall back to `Instant.now()`. |
-| `text` | ✓ | String | Body text shown on phone notification and watch (unless overridden). Newlines are supported. |
+| `text` | ✓ | String | Body text shown on phone notification and watch. Newlines are supported. |
 | `tags` | ✓ | Array<String> | Used for allow/block filtering in settings. Include `"*"` or leave empty to bypass filtering. Comparisons are case-insensitive. |
+| `actions` |   | Array<Object> | Optional notification buttons. Each item supplies a `name` and `url` (HTTP/HTTPS) and triggers a GET request without dismissing the notification. |
 | `vibrate_pattern` |   | Array<Number> | Millisecond pattern for important alerts. Ignored for silent events. |
 | `timeout` |   | Number | Seconds before a missing-status alert fires for `ongoing` topics. Requires `alertOnMissingStatus` enabled. |
 | `remove` |   | Boolean | When `true`, dismisses all notifications and stored state for the given `topic`. Other fields are ignored. |
+
+#### Action Objects
+
+Each entry in `actions` adds a button to both the phone and Wear OS notifications. Buttons fire an HTTP GET request and leave the notification visible.
+
+| Field | Required | Type | Notes |
+| ----- | :------: | ---- | ----- |
+| `name` | ✓ | String | Label shown on the notification button. Keep it short to fit on Wear dialogs. |
+| `url` | ✓ | String | Fully qualified HTTP or HTTPS URL invoked with a GET request. Up to three actions per event are rendered. |
 
 You can send multiple events in a single message; each element is processed sequentially.
 
@@ -99,10 +109,12 @@ You can send multiple events in a single message; each element is processed sequ
     "text": "Doorbell idle",
     "timeout": 300,
     "tags": ["doorbell"],
-    "wearable": {
-      "headline": "Front Door",
-      "body": "Doorbell idle"
-    }
+    "actions": [
+      {
+        "name": "Remove",
+        "url": "https://example.com/rest/remove"
+      }
+    ]
   },
   {
     "timestamp": 1732207400000,
@@ -137,6 +149,8 @@ structures intact (lists, nested objects, numbers). The clients call
 - **Notification Channels**
   - Phone: `ongoing`, `normal`, and `important` channels handle low/high priority behavior.
   - Wear: separate toggles allow muting silent (ongoing + normal) vs important alerts when paired.
+- **Action Buttons**
+  - Up to three buttons per event appear on both devices when `actions` are provided. Triggered buttons issue a best-effort HTTP GET to the supplied URL and leave the notification in place.
 - **Missing Status Alerts**
   - When an `ongoing` event specifies `timeout`, the phone (and optionally the watch) will raise an
     important notification if the topic stops updating before the timeout elapses.

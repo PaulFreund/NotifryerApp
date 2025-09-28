@@ -17,6 +17,7 @@ data class NotificationEvent(
     @SerialName("vibrate_pattern")
     val vibratePattern: List<Long>? = null,
     val wearable: WearPayload? = null,
+    val actions: List<NotificationAction> = emptyList(),
     val timeout: Long? = null
 ) {
     val topic: String
@@ -55,6 +56,12 @@ data class NotificationEvent(
 data class WearPayload(
     val headline: String? = null,
     val body: String? = null
+)
+
+@Serializable
+data class NotificationAction(
+    val name: String,
+    val url: String
 )
 
 enum class NotificationEventType(val rawValue: String) {

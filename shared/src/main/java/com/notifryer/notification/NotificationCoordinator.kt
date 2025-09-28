@@ -18,6 +18,7 @@ class NotificationCoordinator(
         val categoryForType: (NotificationEventType) -> String,
         val defaultTitle: () -> String,
         val defaultBody: () -> String,
+        val actionsProvider: (NotificationEventType, NotificationEvent) -> List<NotificationCompat.Action> = { _, _ -> emptyList() },
         val builderExtras: (NotificationEventType, NotificationEvent, Boolean, NotificationCompat.Builder) -> Unit = { _, _, _, _ -> }
     )
 
@@ -60,6 +61,10 @@ class NotificationCoordinator(
         }
 
         largeIcon?.let { builder.setLargeIcon(it) }
+
+        config.actionsProvider(type, event)
+            .takeIf { it.isNotEmpty() }
+            ?.forEach { action -> builder.addAction(action) }
 
         config.builderExtras(type, event, silent, builder)
 
