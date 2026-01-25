@@ -11,6 +11,7 @@ data class NotificationEvent(
     @SerialName("title")
     private val legacyTitleField: String? = null,
     val remove: Boolean = false,
+    val permanent: Boolean = false,
     val type: String = NotificationEventType.ONGOING.rawValue,
     val tags: List<String> = emptyList(),
     val text: String = "",

@@ -32,6 +32,7 @@ class NotificationCoordinator(
     ) {
         val title = event.topic.ifBlank { config.defaultTitle() }
         val body = event.text.ifBlank { config.defaultBody() }
+        val isPermanent = event.permanent
         val builder = NotificationCompat.Builder(context, config.channelForType(type))
             .setSmallIcon(config.smallIconRes)
             .setContentTitle(title)
@@ -42,12 +43,13 @@ class NotificationCoordinator(
                     .bigText(body)
             )
             .setCategory(config.categoryForType(type))
-            .setAutoCancel(true)
+            .setAutoCancel(!isPermanent)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true)
             .setWhen(event.timestampMillis.takeIf { it > 0L } ?: System.currentTimeMillis())
             .setShowWhen(true)
             .setGroup(config.groupKey)
+            .setOngoing(isPermanent)
 
         if (silent) {
             builder.setSilent(true)

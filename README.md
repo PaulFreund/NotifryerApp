@@ -53,6 +53,7 @@ notification event. The phone and watch share the same schema.
 | ----- | :------: | ---- | ----- |
 | `topic` | ✓ | String | Identifier for the status. Acts as the notification title and tile headline. Unique per ongoing item. |
 | `type` | ✓ | String | One of `ongoing`, `normal`, `important`. Determines priority and channel on both devices. |
+| `permanent` |   | Boolean | When `true`, posts the event as an Android ongoing notification (not swipe-dismissible). Defaults to `false`. Clear it via `remove: true` or by updating the same `topic`. |
 | `timestamp` | ✓ | Number | Unix epoch millis. If omitted or ≤0 we fall back to `Instant.now()`. |
 | `text` | ✓ | String | Body text shown on phone notification and watch. Newlines are supported. |
 | `tags` | ✓ | Array<String> | Used for allow/block filtering in settings. Include `"*"` or leave empty to bypass filtering. Comparisons are case-insensitive. |
